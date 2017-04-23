@@ -1,0 +1,3 @@
+‘() empty list
+
+if a problem statement is about information of arbitrary size, you need a self-referential data definition to represent it
