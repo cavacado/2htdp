@@ -1,3 +1,12 @@
 ‘() empty list
 
 if a problem statement is about information of arbitrary size, you need a self-referential data definition to represent it
+
+problems are collections of definitions: structure type definitions, data definitions, constant definitions, and function definitions.
+
+design one function per task. formulate auxiliary function definitions for every dependency between quantities in the problem
+
+design one template per data definition. formulate auxiliary function definitions when one data definition points to a second data definition.
+
+wish list
+-> maintain a list of function headers that must be designed to complete a program.
