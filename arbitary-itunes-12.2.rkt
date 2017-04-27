@@ -45,7 +45,7 @@
 ;(define (read-itunes-as-tracks file-name)
 ;  ...)
 
-(define ITUNES-LOCATION "itunes-lib.xml")
+(define ITUNES-LOCATION "sample-itunes-lib.xml")
 
 ; LTracks
 (define itunes-tracks
@@ -148,5 +148,71 @@
   (cond
     [(empty? alot) '()]
     [else (cons (make-album (first alot) (select-album (first alot) alot)) (select-albums (rest alot)))]))
- 
-     
+
+
+; part 2
+
+; An LLists is one of:
+; - '()
+; - (cons LAssoc LLists)
+
+; An LAssoc is one of:
+; - '()
+; - (cons Association LAssoc)
+;
+; An Association is a list of two items:
+; - (cons String (cons BSDN '()))
+
+; A BSDN is one of:
+; - Boolean
+; - Number
+; - String
+; - Date
+
+; String -> LLists
+; creates a list of lists representation for all tracks in
+; file-name,  which must be an XML export from iTunes
+; (define (read-itunes-as-lists file-name)
+; ...)
+
+; LLists
+(define list-tracks
+  (read-itunes-as-lists ITUNES-LOCATION))
+
+; ex 206
+; String LAssoc Any -> Assoc
+
+(define (find-association key loa default)
+  (cond
+    [(empty? loa) default]
+    [else
+     (cond
+       [(equal? (first (first loa)) key) (first loa)]
+       [else (find-association key (rest loa) default)])]))
+
+(check-expect (find-association "Genre" (first list-tracks) #f) (list "Genre" "Mash-up"))
+
+; ex 207
+; LLists -> Number
+
+(define (total-time/list alol)
+  (cond
+    [(empty? alol) 0]
+    [else (+ (first (rest (find-association "Total Time" (first alol) 0))) (total-time/list (rest alol)))]))
+
+; ex 208
+; LLists -> String
+
+(define (boolean-attributes alol)
+  (cond
+    [(empty? alol) '()]
+    [else
+     (cons (create-set (find-all-booleans (first alol))) (boolean-attributes (rest alol)))]))
+
+(define (find-all-booleans aloa)
+  (cond
+    [(empty? aloa) '()]
+    [else
+     (cond
+       [(boolean? (second (first aloa))) (cons (first aloa) (find-all-booleans (rest aloa)))]
+       [else (find-all-booleans (rest aloa))])]))
