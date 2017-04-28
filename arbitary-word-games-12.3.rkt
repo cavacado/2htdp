@@ -1,99 +1,739 @@
-;; The first three lines of this file were inserted by DrRacket. They record metadata
-;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname arbitary-word-games-12.3) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "itunes.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "itunes.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp")) #f)))
-; On OS X: 
-(define DICTIONARY-LOCATION "/usr/share/dict/words")
- 
-; A Dictionary is a List-of-strings.
-(define DICTIONARY-AS-LIST (read-lines DICTIONARY-LOCATION))
+#reader(lib"read.ss""wxme")WXME0108 ## 
+#|
+   This file uses the GRacket editor format.
+   Open this file in DrRacket version 6.8 or later to read it.
 
-; String -> List-of-strings
-; find all words that use the same letters as s
+   Most likely, it was created by saving a program in DrRacket,
+   and it probably contains a program with non-text elements
+   (such as images or comment boxes).
 
-; A Word is one of:
-; - '() or
-; - (cons 1String Word)
-; interpretation a String as a list of 1Strings (letters)
-
-; String -> Boolean
-(define (all-words-from-rat? w)
-  (and
-   (member? "rat" w)
-   (member? "art" w)
-   (member? "tar" w)))
-
-; String -> List-of-strings
-; find all words that the letters of some given word spell
-
-;(check-member-of (alternative-words "cat")
-;                 (list "act" "cat")
-;                 (list "cat" "act"))
-
-;(check-satisfied (alternative-words "rat") all-words-from-rat?)
-
-(define (alternative-words s)
-  (in-dictionary
-   (words->strings (arrangements (string->word s)))))
-
-; ex 210
-; List-of-words -> List-of-strings
-; turn all Words in low into Strings
-(define (words->strings low)
-  (cond
-    [(empty? low) '()]
-    [else (cons (word->string (first low)) (words->strings (rest low)))]))
-
-; ex 211
-(define (in-dictionary los)
-  (cond
-    [(empty? los) '()]
-    [(member? (first los) DICTIONARY-AS-LIST) (cons (first los) (in-dictionary (rest los)))]
-    [else (in-dictionary (rest los))]))
-
-; Word -> List-of-words
-; find all re-arrangements of word
-
-;ex 209
-; String -> Word
-; convert s to the chosen word representation
-(define (string->word s)
-  (string->list s))
-
-; Word -> String
-; convert w to a string
-(define (word->string w)
-  (list->string w))
-
-; A Word is one of:
-; - '() or
-; - (cons 1String Word)
-; interpretation a String as a list of 1Strings (letters)
-
-; List-of-words can be one of the following
-; - '() or
-; - (cons Word Low)
-; interpretation a List-of-words as a list of words which are lists of 1Strings (letters)
-
-(check-expect (list #\a #\b) (cons #\a (cons #\b '())))
-
-; Word -> List-of-words
-; creates all rearrangements of the letters in w
-(define (arrangements w)
-  (cond
-    [(empty? w) (list '())]
-    [else (insert-everywhere/in-all-words (first w) (arrangements (rest w)))]))
-
-; 1String List-of-words
-; inserts 1String at front, inbetween a character and at end
-(define (insert-everywhere/in-all-words char alow)
-  (cond
-    [(empty? alow) '()]
-    [else (cons (permutate (explode char) (first alow)) (insert-everywhere/in-all-words char (rest alow)))]))
-
-(define (permutate aloc w)
-  (cond
-    [(empty? w) '()]
-    [else (cons (append (cons (first w) aloc) (rest w)) (permutate (cons (first w) aloc) (rest w)))]))
-
-(define (jumble w)
-  (insert-everywhere/in-all-words (first w) (permutate '() (rest w))))
+            http://racket-lang.org/
+|#
+ 33 7 #"wxtext\0"
+3 1 6 #"wxtab\0"
+1 1 8 #"wximage\0"
+2 0 8 #"wxmedia\0"
+4 1 34 #"(lib \"syntax-browser.ss\" \"mrlib\")\0"
+1 0 36 #"(lib \"cache-image-snip.ss\" \"mrlib\")\0"
+1 0 68
+(
+ #"((lib \"image-core.ss\" \"mrlib\") (lib \"image-core-wxme.rkt\" \"mr"
+ #"lib\"))\0"
+) 1 0 16 #"drscheme:number\0"
+3 0 44 #"(lib \"number-snip.ss\" \"drscheme\" \"private\")\0"
+1 0 36 #"(lib \"comment-snip.ss\" \"framework\")\0"
+1 0 93
+(
+ #"((lib \"collapsed-snipclass.ss\" \"framework\") (lib \"collapsed-sni"
+ #"pclass-wxme.ss\" \"framework\"))\0"
+) 0 0 43 #"(lib \"collapsed-snipclass.ss\" \"framework\")\0"
+0 0 19 #"drscheme:sexp-snip\0"
+0 0 29 #"drscheme:bindings-snipclass%\0"
+1 0 101
+(
+ #"((lib \"ellipsis-snip.rkt\" \"drracket\" \"private\") (lib \"ellipsi"
+ #"s-snip-wxme.rkt\" \"drracket\" \"private\"))\0"
+) 2 0 88
+(
+ #"((lib \"pict-snip.rkt\" \"drracket\" \"private\") (lib \"pict-snip.r"
+ #"kt\" \"drracket\" \"private\"))\0"
+) 0 0 55
+#"((lib \"snip.rkt\" \"pict\") (lib \"snip-wxme.rkt\" \"pict\"))\0"
+1 0 34 #"(lib \"bullet-snip.rkt\" \"browser\")\0"
+0 0 25 #"(lib \"matrix.ss\" \"htdp\")\0"
+1 0 22 #"drscheme:lambda-snip%\0"
+1 0 29 #"drclickable-string-snipclass\0"
+0 0 26 #"drracket:spacer-snipclass\0"
+0 0 57
+#"(lib \"hrule-snip.rkt\" \"macro-debugger\" \"syntax-browser\")\0"
+1 0 26 #"drscheme:pict-value-snip%\0"
+0 0 45 #"(lib \"image-snipr.ss\" \"slideshow\" \"private\")\0"
+1 0 38 #"(lib \"pict-snipclass.ss\" \"slideshow\")\0"
+2 0 55 #"(lib \"vertical-separator-snip.ss\" \"stepper\" \"private\")\0"
+1 0 18 #"drscheme:xml-snip\0"
+1 0 31 #"(lib \"xml-snipclass.ss\" \"xml\")\0"
+1 0 21 #"drscheme:scheme-snip\0"
+2 0 34 #"(lib \"scheme-snipclass.ss\" \"xml\")\0"
+1 0 10 #"text-box%\0"
+1 0 32 #"(lib \"text-snipclass.ss\" \"xml\")\0"
+1 0 1 6 #"wxloc\0"
+          0 0 65 0 1 #"\0"
+0 75 1 #"\0"
+0 12 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 0 9
+#"Standard\0"
+0 75 6 #"Menlo\0"
+0 12 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 -1 -1 2 24
+#"framework:default-color\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 15
+#"text:ports out\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 93 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 255 0 0 0 0 0 -1
+-1 2 15 #"text:ports err\0"
+0 -1 1 #"\0"
+1 0 -1 -1 93 -1 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 17
+#"text:ports value\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
+-1 2 27 #"Matching Parenthesis Style\0"
+0 -1 1 #"\0"
+1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
+-1 2 1 #"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 37
+#"framework:syntax-color:scheme:symbol\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 38
+#"framework:syntax-color:scheme:keyword\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2
+38 #"framework:syntax-color:scheme:comment\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 37
+#"framework:syntax-color:scheme:string\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 35
+#"framework:syntax-color:scheme:text\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 39
+#"framework:syntax-color:scheme:constant\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 49
+#"framework:syntax-color:scheme:hash-colon-keyword\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 42
+#"framework:syntax-color:scheme:parenthesis\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
+#"framework:syntax-color:scheme:error\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 36
+#"framework:syntax-color:scheme:other\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 16
+#"Misspelled Text\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2
+38 #"drracket:check-syntax:lexically-bound\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 28
+#"drracket:check-syntax:set!d\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 37
+#"drracket:check-syntax:unused-require\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
+#"drracket:check-syntax:free-variable\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 31
+#"drracket:check-syntax:imported\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 47
+#"drracket:check-syntax:my-obligation-style-pref\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 50
+#"drracket:check-syntax:their-obligation-style-pref\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 48
+#"drracket:check-syntax:unk-obligation-style-pref\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
+49 #"drracket:check-syntax:both-obligation-style-pref\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
+26 #"plt:htdp:test-coverage-on\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
+#"\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 2 27
+#"plt:htdp:test-coverage-off\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 4 1
+#"\0"
+0 70 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
+-1 -1 4 4 #"XML\0"
+0 70 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
+-1 -1 2 37 #"plt:module-language:test-coverage-on\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 38
+#"plt:module-language:test-coverage-off\0"
+0 -1 1 #"\0"
+1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 4 1
+#"\0"
+0 71 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
+-1 -1 4 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
+-1 4 1 #"\0"
+0 71 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
+-1 4 1 #"\0"
+0 71 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 100 0 0 0 0 -1
+-1 2 1 #"\0"
+0 71 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
+-1 -1 2 1 #"\0"
+0 71 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 100 0 0 0 0 -1
+-1 17 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+24 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+15 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+44 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+46 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+4 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 255 255 255 -1 -1
+2 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
+-1 -1 2 1 #"\0"
+0 -1 1 #"\0"
+1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 65 105 225 0 0 0
+-1 -1           0 464 0 4 3 85
+(
+ #";; The first three lines of this file were inserted by DrRacket. The"
+ #"y record metadata"
+) 0 0 4 29 1 #"\n"
+0 0 4 3 85
+(
+ #";; about the language level of this file in a form that our tools ca"
+ #"n easily process."
+) 0 0 4 29 1 #"\n"
+0 0 4 3 173
+(
+ #"#reader(lib \"htdp-beginner-abbr-reader.ss\" \"lang\")((modname |#ar"
+ #"bitary-word-games-12.3|) (read-case-sensitive #t) (teachpacks ((lib "
+ #"\"image.rkt\" \"teachpack\" \"2htdp\") (lib \"un"
+) 0 0 4 3 345
+(
+ #"iverse.rkt\" \"teachpack\" \"2htdp\") (lib \"itunes.rkt\" \"teachpac"
+ #"k\" \"2htdp\") (lib \"batch-io.rkt\" \"teachpack\" \"2htdp\"))) (htd"
+ #"p-settings #(#t constructor repeating-decimal #f #t none #f ((lib \""
+ #"image.rkt\" \"teachpack\" \"2htdp\") (lib \"universe.rkt\" \"teachpa"
+ #"ck\" \"2htdp\") (lib \"itunes.rkt\" \"teachpack\" \"2htdp\") (lib \""
+ #"batch-io.rkt\" \"teachpack\" \"2htdp\")) #f)))"
+) 0 0 4 29 1 #"\n"
+0 0 17 3 11 #"; On OS X: "
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 1 #" "
+0 0 14 3 19 #"DICTIONARY-LOCATION"
+0 0 24 3 1 #" "
+0 0 19 3 23 #"\"/usr/share/dict/words\""
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #" "
+0 0 24 29 1 #"\n"
+0 0 17 3 36 #"; A Dictionary is a List-of-strings."
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 1 #" "
+0 0 14 3 18 #"DICTIONARY-AS-LIST"
+0 0 24 3 2 #" ("
+0 0 14 3 10 #"read-lines"
+0 0 24 3 1 #" "
+0 0 14 3 19 #"DICTIONARY-LOCATION"
+0 0 24 3 2 #"))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 27 #"; String -> List-of-strings"
+0 0 24 29 1 #"\n"
+0 0 17 3 47 #"; find all words that use the same letters as s"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 19 #"; A Word is one of:"
+0 0 24 29 1 #"\n"
+0 0 17 3 10 #"; - '() or"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; - (cons 1String Word)"
+0 0 24 29 1 #"\n"
+0 0 17 3 57 #"; interpretation a String as a list of 1Strings (letters)"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 19 #"; String -> Boolean"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 19 #"all-words-from-rat?"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 14 3 3 #"and"
+0 0 24 29 1 #"\n"
+0 0 24 3 4 #"   ("
+0 0 14 3 7 #"member?"
+0 0 24 3 1 #" "
+0 0 19 3 5 #"\"rat\""
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 4 #"   ("
+0 0 14 3 7 #"member?"
+0 0 24 3 1 #" "
+0 0 19 3 5 #"\"art\""
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 4 #"   ("
+0 0 14 3 7 #"member?"
+0 0 24 3 1 #" "
+0 0 19 3 5 #"\"tar\""
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 3 #")))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 27 #"; String -> List-of-strings"
+0 0 24 29 1 #"\n"
+0 0 17 3 58
+#"; find all words that the letters of some given word spell"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 43 #";(check-member-of (alternative-words \"cat\")"
+0 0 24 29 1 #"\n"
+0 0 17 3 36 #";                 (list \"act\" \"cat\")"
+0 0 24 29 1 #"\n"
+0 0 17 3 37 #";                 (list \"cat\" \"act\"))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 64
+#";(check-satisfied (alternative-words \"rat\") all-words-from-rat?)"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 17 #"alternative-words"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"s"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 14 3 13 #"in-dictionary"
+0 0 24 29 1 #"\n"
+0 0 24 3 4 #"   ("
+0 0 14 3 14 #"words->strings"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"arrangements"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"string->word"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"s"
+0 0 24 3 5 #")))))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 8 #"; ex 210"
+0 0 24 29 1 #"\n"
+0 0 17 3 34 #"; List-of-words -> List-of-strings"
+0 0 24 29 1 #"\n"
+0 0 17 3 36 #"; turn all Words in low into Strings"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 14 #"words->strings"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"low"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 15 3 4 #"cond"
+0 0 24 29 1 #"\n"
+0 0 24 3 6 #"    [("
+0 0 14 3 6 #"empty?"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"low"
+0 0 24 3 2 #") "
+0 0 21 3 1 #"'"
+0 0 24 3 3 #"()]"
+0 0 24 29 1 #"\n"
+0 0 24 3 5 #"    ["
+0 0 14 3 4 #"else"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"cons"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"word->string"
+0 0 24 3 2 #" ("
+0 0 14 3 5 #"first"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"low"
+0 0 24 3 4 #")) ("
+0 0 14 3 14 #"words->strings"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"rest"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"low"
+0 0 24 3 6 #")))]))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 8 #"; ex 211"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 13 #"in-dictionary"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 15 3 4 #"cond"
+0 0 24 29 1 #"\n"
+0 0 24 3 6 #"    [("
+0 0 14 3 6 #"empty?"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 2 #") "
+0 0 21 3 1 #"'"
+0 0 24 3 3 #"()]"
+0 0 24 29 1 #"\n"
+0 0 24 3 6 #"    [("
+0 0 14 3 7 #"member?"
+0 0 24 3 2 #" ("
+0 0 14 3 5 #"first"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 2 #") "
+0 0 14 3 18 #"DICTIONARY-AS-LIST"
+0 0 24 3 3 #") ("
+0 0 14 3 4 #"cons"
+0 0 24 3 2 #" ("
+0 0 14 3 5 #"first"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 3 #") ("
+0 0 14 3 13 #"in-dictionary"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"rest"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 4 #")))]"
+0 0 24 29 1 #"\n"
+0 0 24 3 5 #"    ["
+0 0 14 3 4 #"else"
+0 0 24 3 2 #" ("
+0 0 14 3 13 #"in-dictionary"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"rest"
+0 0 24 3 1 #" "
+0 0 14 3 3 #"los"
+0 0 24 3 5 #"))]))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; Word -> List-of-words"
+0 0 24 29 1 #"\n"
+0 0 17 3 34 #"; find all re-arrangements of word"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 7 #";ex 209"
+0 0 24 29 1 #"\n"
+0 0 17 3 16 #"; String -> Word"
+0 0 24 29 1 #"\n"
+0 0 17 3 45 #"; convert s to the chosen word representation"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"string->word"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"s"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 14 3 12 #"string->list"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"s"
+0 0 24 3 2 #"))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 16 #"; Word -> String"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; convert w to a string"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"word->string"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 14 3 12 #"list->string"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 2 #"))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 19 #"; A Word is one of:"
+0 0 24 29 1 #"\n"
+0 0 17 3 10 #"; - '() or"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; - (cons 1String Word)"
+0 0 24 29 1 #"\n"
+0 0 17 3 57 #"; interpretation a String as a list of 1Strings (letters)"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 43 #"; List-of-words can be one of the following"
+0 0 24 29 1 #"\n"
+0 0 17 3 10 #"; - '() or"
+0 0 24 29 1 #"\n"
+0 0 17 3 19 #"; - (cons Word Low)"
+0 0 24 29 1 #"\n"
+0 0 17 3 89
+(
+ #"; interpretation a List-of-words as a list of words which are lists "
+ #"of 1Strings (letters)"
+) 0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 14 3 12 #"check-expect"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"list"
+0 0 24 3 1 #" "
+0 0 21 3 3 #"#\\a"
+0 0 24 3 1 #" "
+0 0 21 3 3 #"#\\b"
+0 0 24 3 3 #") ("
+0 0 14 3 4 #"cons"
+0 0 24 3 1 #" "
+0 0 21 3 3 #"#\\a"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"cons"
+0 0 24 3 1 #" "
+0 0 21 3 3 #"#\\b"
+0 0 24 3 1 #" "
+0 0 21 3 1 #"'"
+0 0 24 3 5 #"())))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; Word -> List-of-words"
+0 0 24 29 1 #"\n"
+0 0 17 3 48 #"; creates all rearrangements of the letters in w"
+0 0 24 29 1 #"\n"
+0 0 24 3 1 #"("
+0 0 15 3 6 #"define"
+0 0 24 3 2 #" ("
+0 0 14 3 12 #"arrangements"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 1 #")"
+0 0 24 29 1 #"\n"
+0 0 24 3 3 #"  ("
+0 0 15 3 4 #"cond"
+0 0 24 29 1 #"\n"
+0 0 24 3 6 #"    [("
+0 0 14 3 6 #"empty?"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 3 #") ("
+0 0 14 3 4 #"list"
+0 0 24 3 1 #" "
+0 0 21 3 1 #"'"
+0 0 24 3 4 #"())]"
+0 0 24 29 1 #"\n"
+0 0 24 3 5 #"    ["
+0 0 14 3 4 #"else"
+0 0 24 3 2 #" ("
+0 0 14 3 30 #"insert-everywhere/in-all-words"
+0 0 24 3 2 #" ("
+0 0 14 3 5 #"first"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 3 #") ("
+0 0 14 3 12 #"arrangements"
+0 0 24 3 2 #" ("
+0 0 14 3 4 #"rest"
+0 0 24 3 1 #" "
+0 0 14 3 1 #"w"
+0 0 24 3 6 #")))]))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 23 #"; 1String List-of-words"
+0 0 24 29 1 #"\n"
+0 0 17 3 60
+#"; inserts 1String at front, inbetween a character and at end"
+0 0 24 29 1 #"\n"
+0 0 17 3 3 #";;("
+0 0 17 3 6 #"define"
+0 0 17 3 2 #" ("
+0 0 17 3 30 #"insert-everywhere/in-all-words"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"char"
+0 0 17 3 1 #" "
+0 0 17 3 5 #"alow)"
+0 0 24 29 1 #"\n"
+0 0 17 3 9 #";;  (cond"
+0 0 24 29 1 #"\n"
+0 0 17 3 8 #";;    [("
+0 0 17 3 6 #"empty?"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"alow"
+0 0 17 3 2 #") "
+0 0 17 3 4 #"'()]"
+0 0 24 29 1 #"\n"
+0 0 17 3 7 #";;    ["
+0 0 17 3 4 #"else"
+0 0 17 3 2 #" ("
+0 0 17 3 4 #"cons"
+0 0 17 3 2 #" ("
+0 0 17 3 9 #"permutate"
+0 0 17 3 2 #" ("
+0 0 17 3 7 #"explode"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"char"
+0 0 17 3 3 #") ("
+0 0 17 3 5 #"first"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"alow"
+0 0 17 3 4 #")) ("
+0 0 17 3 30 #"insert-everywhere/in-all-words"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"char"
+0 0 17 3 2 #" ("
+0 0 17 3 4 #"rest"
+0 0 17 3 1 #" "
+0 0 17 3 10 #"alow)))]))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 3 #";;("
+0 0 17 3 6 #"define"
+0 0 17 3 2 #" ("
+0 0 17 3 9 #"permutate"
+0 0 17 3 1 #" "
+0 0 17 3 4 #"aloc"
+0 0 17 3 1 #" "
+0 0 17 3 2 #"w)"
+0 0 24 29 1 #"\n"
+0 0 17 3 9 #";;  (cond"
+0 0 24 29 1 #"\n"
+0 0 17 3 8 #";;    [("
+0 0 17 3 6 #"empty?"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"w"
+0 0 17 3 2 #") "
+0 0 17 3 4 #"'()]"
+0 0 24 29 1 #"\n"
+0 0 17 3 7 #";;    ["
+0 0 17 3 4 #"else"
+0 0 17 3 2 #" ("
+0 0 17 3 4 #"cons"
+0 0 17 3 2 #" ("
+0 0 17 3 6 #"append"
+0 0 17 3 2 #" ("
+0 0 17 3 4 #"cons"
+0 0 17 3 2 #" ("
+0 0 17 3 5 #"first"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"w"
+0 0 17 3 2 #") "
+0 0 17 3 4 #"aloc"
+0 0 17 3 3 #") ("
+0 0 17 3 4 #"rest"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"w"
+0 0 17 3 4 #")) ("
+0 0 17 3 9 #"permutate"
+0 0 17 3 2 #" ("
+0 0 17 3 4 #"cons"
+0 0 17 3 2 #" ("
+0 0 17 3 5 #"first"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"w"
+0 0 17 3 2 #") "
+0 0 17 3 4 #"aloc"
+0 0 17 3 3 #") ("
+0 0 17 3 4 #"rest"
+0 0 17 3 1 #" "
+0 0 17 3 7 #"w)))]))"
+0 0 24 29 1 #"\n"
+0 0 24 29 1 #"\n"
+0 0 17 3 4 #";; ("
+0 0 17 3 6 #"define"
+0 0 17 3 2 #" ("
+0 0 17 3 6 #"jumble"
+0 0 17 3 1 #" "
+0 0 17 3 2 #"w)"
+0 0 24 29 1 #"\n"
+0 0 17 3 5 #";;  ("
+0 0 17 3 30 #"insert-everywhere/in-all-words"
+0 0 17 3 2 #" ("
+0 0 17 3 5 #"first"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"w"
+0 0 17 3 3 #") ("
+0 0 17 3 9 #"permutate"
+0 0 17 3 1 #" "
+0 0 17 3 1 #"'"
+0 0 17 3 4 #"() ("
+0 0 17 3 4 #"rest"
+0 0 17 3 1 #" "
+0 0 17 3 5 #"w))))"
+0           0
