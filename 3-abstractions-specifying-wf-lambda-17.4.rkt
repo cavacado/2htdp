@@ -109,5 +109,3 @@
   (lambda (n)
     (equal? x (list-ref l n))))
   
-
-  
