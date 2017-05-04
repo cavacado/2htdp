@@ -87,14 +87,14 @@
 ; S-expr -> N
 ; determines the depth of an S-expr
 
-;(check-expect (depth 'atom) 1)
-;(check-expect (depth '(world hello)) 2)
-;(check-expect (depth '(((world) hello) hello)) 4)
+(check-expect (fin-depth 'atom) 1)
+(check-expect (fin-depth '(world hello)) 2)
+(check-expect (fin-depth '(((world) hello) hello)) 4)
 
 (define (depth sexpr)
   (cond
     [(atom? sexpr) 1]
-    [else (+ 1 (count-lx sexpr))]))
+    [else (+ 2 (count-lx sexpr))]))
 
 (define (count-lx sexpr)
   (cond
@@ -104,5 +104,8 @@
        [(list? (first sexpr)) (+ 1 (count-lx (first sexpr)) (count-lx (rest sexpr)))]
        [else (+ 0 (count-lx (rest sexpr)))])]))
 
-
+(define (fin-depth sexpr)
+  (cond
+    [(atom? sexpr) 1]
+    [else (apply max (map depth (list sexpr)))]))
 
