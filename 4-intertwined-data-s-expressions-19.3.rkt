@@ -5,6 +5,13 @@
 ; - Atom
 ; - SL
 
+;; ex 320
+; An S-expr-revised is one of:
+; - Number
+; - String
+; - Symbol
+; - [List-of Number String Symbol] 
+
 ; An SL is one of:
 ; - '()
 ; - (cons S-expr SL)
@@ -108,4 +115,23 @@
   (cond
     [(atom? sexpr) 1]
     [else (apply max (map depth (list sexpr)))]))
+
+;; ex 319
+
+; S-expr Symbol Symbol -> S-expr
+; interpretation: function replaces all instances of old symbol
+; with new symbol
+
+(define (substitute sexpr sym1 sym2)
+  (cond
+    [(and (atom? sexpr) (equal? sym1 sexpr)) sym2]
+    [(atom? sexpr) sexpr]
+    [else (aux-fn sexpr sym1 sym2)]))
+
+(define (aux-fn sexpr sym1 sym2)
+  (cond
+    [(empty? sexpr) '()]
+    [else (cons (substitute (first sexpr) sym1 sym2) (aux-fn (rest sexpr) sym1 sym2))]))
+     
+
 
