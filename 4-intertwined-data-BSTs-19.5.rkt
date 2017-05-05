@@ -52,6 +52,17 @@
                                              (make-node 24 'e NONE NONE))
                                   NONE)
                        NONE))
+
+(define bt6 (make-node 63 'a
+                       (make-node 29 'b
+                                  (make-node 15 'd
+                                             (make-node 10 'h NONE NONE)
+                                             (make-node 24 'i NONE NONE))
+                                  NONE)
+                       (make-node 89 'c
+                                  (make-node 77 'l NONE NONE)
+                                  (make-node 95 'g NONE
+                                             (make-node 99 'o NONE NONE)))))
      
 
 ;; ex 323
@@ -137,3 +148,65 @@
     [else NONE]))
 
 ;; ex 326
+
+; B N S -> BST
+; interpretation: consumes a BST Number and Symbol
+; inserts the new node into the correct position
+
+(check-expect (create-bst bt3 13 'z)
+              (make-node 63 'a
+                       (make-node 29 'b
+                                  (make-node 15 'c
+                                             (make-node 10 'd NONE
+                                                        (make-node 13 'z NONE NONE))
+                                             (make-node 24 'e NONE NONE))
+                                  NONE)
+                       (make-node 89 'f
+                                  (make-node 77 'g NONE NONE)
+                                  (make-node 95 'h NONE
+                                             (make-node 99 'i NONE NONE)))))
+
+(define (create-bst a-bst n s)
+  (cond
+    [(not (node? a-bst)) (make-node n s NONE NONE)]
+    [(and (< n (node-ssn a-bst)) (not (node? (node-left a-bst))))
+     (make-node (node-ssn a-bst) (node-name a-bst)
+                (make-node n s NONE NONE) (node-right a-bst))]
+    [(and (> n (node-ssn a-bst)) (not (node? (node-right a-bst))))
+     (make-node (node-ssn a-bst) (node-name a-bst)
+                (node-left a-bst) (make-node n s NONE NONE))]
+    [(< n (node-ssn a-bst)) (make-node (node-ssn a-bst) (node-name a-bst)
+                                       (create-bst (node-left a-bst) n s) (node-right a-bst))]
+    [(> n (node-ssn a-bst)) (make-node (node-ssn a-bst) (node-name a-bst)
+                                       (node-left a-bst) (create-bst (node-right a-bst) n s))]))
+
+;; ex 327
+; [List-of [List Number Symbol]] -> BST
+; interpretation: consumes a list of numbers
+; and names and produces a binary search tree
+; by repeatedly applying create-bst
+
+(check-expect (create-bst-from-list '((99 o)
+                                      (77 l)
+                                      (24 i)
+                                      (10 h)
+                                      (95 g)
+                                      (15 d)
+                                      (89 c)
+                                      (29 b)
+                                      (63 a))) bt6)
+
+(define (create-bst-from-list lons)
+  (cond
+    [(empty? (rest lons)) (create-bst NONE
+                                      (first (first lons))
+                                      (second (first lons)))]
+    [else (create-bst (create-bst-from-list (rest lons))
+                      (first (first lons))
+                      (second (first lons)))]))
+  
+              
+                                    
+
+                                
+
