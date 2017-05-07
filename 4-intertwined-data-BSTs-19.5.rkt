@@ -168,7 +168,10 @@
 
 (define (create-bst a-bst n s)
   (cond
+    ; is a-bst a node? if no; then construct a bst from the inputted arguments
     [(not (node? a-bst)) (make-node n s NONE NONE)]
+    ; is n < ssn of node? && node-left of node does not exist?
+    ; then construct the bst with the inputted arguments on node-left of the last node..
     [(and (< n (node-ssn a-bst)) (not (node? (node-left a-bst))))
      (make-node (node-ssn a-bst) (node-name a-bst)
                 (make-node n s NONE NONE) (node-right a-bst))]
