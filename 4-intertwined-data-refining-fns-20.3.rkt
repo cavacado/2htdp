@@ -34,3 +34,40 @@
        [else (list-finder (rest lx) str)])]))
 
 ;; ex 340
+
+; Dir -> [List-of String]
+; interpretation: consumes a dir
+; then produces the list of names of all files
+; and sub-directories
+
+(check-expect (ls dir2) (list '/Users/zhaoloong/racket "findme.txt" '/Users/zhaoloong/racket/dir1))
+
+(define (ls dir)
+  (append (list (dir-name dir))
+          (file-list-append (dir-files dir))
+          (foldr append '() (map ls (dir-dirs dir)))))
+
+(define (file-list-append lx)
+  (cond
+    [(empty? lx) '()]
+    [else
+     (cons (file-name (first lx)) (file-list-append (rest lx)))]))
+
+
+;; ex 341
+; Dir -> Number
+; consumes a dir and computes the total size
+; of it
+
+(check-expect (du dir2) 2)
+(check-expect (du dir1) 18627)
+
+(define (lx-file-size lx)
+  (foldr (lambda (x r)
+           (+ (file-size x) r)) 0 lx))
+
+(define (du dir)
+  (+ 1
+     (lx-file-size (dir-files dir))
+     (foldr + 0 (map du (dir-dirs dir)))))
+
