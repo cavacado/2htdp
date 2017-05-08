@@ -3,6 +3,28 @@
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname 4-intertwined-data-refining-fns-20.3) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp") (lib "dir.rkt" "teachpack" "htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp") (lib "dir.rkt" "teachpack" "htdp")) #f)))
 (define dir1 (create-dir "/Users/zhaoloong/exercism"))
 (define dir2 (create-dir "/Users/zhaoloong/racket"))
+(define dir3 (make-dir "TS"
+                                 (list
+                                  (make-dir "Text"
+                                            '()
+                                            (list
+                                             (make-file "part1" 99 "content1")
+                                             (make-file "part2" 52 "content2")
+                                             (make-file "part3" 17 "content3")))
+                                  (make-dir "Libs"
+                                            (list
+                                             (make-dir "Code"
+                                                       '()
+                                                       (list
+                                                        (make-file "hang" 8 "content4")
+                                                        (make-file "draw" 2 "content5")))
+                                             (make-dir "Docs"
+                                                       '()
+                                                       (list
+                                                        (make-file "read!" 19 "content6"))))
+                                            '()))
+                                  (list
+                                   (make-file "read!" 10 "content7"))))
 
 (define (how-many dir)
   (+ (length (dir-files dir))
@@ -71,3 +93,25 @@
      (lx-file-size (dir-files dir))
      (foldr + 0 (map du (dir-dirs dir)))))
 
+; A Path is [List-of String]
+; interpretation directions into in a directory tree
+
+;; ex 342
+; Dir String -> [Maybe Path]
+
+(check-expect (find dir2 "findme.txt") (list '/Users/zhaoloong/racket "findme.txt"))
+(check-expect (find dir2 "lalalala.txt") #f)
+
+(define (find dir str)
+  (cond
+    [(find? dir str)
+     (append (list (dir-name dir))
+             (foldr append '()
+                    (map find
+                         (dir-dirs dir)
+                         (make-list (length (dir-dirs dir)) str))))]
+    [else
+     (cond
+       [(empty? (dir-dirs dir)) (list str)]
+       [else #f])]))
+     
