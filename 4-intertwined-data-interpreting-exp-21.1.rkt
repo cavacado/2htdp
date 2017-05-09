@@ -154,4 +154,110 @@
   (eval-expression (parse sexp)))
 
 
+; A BSL-var-expr is one of :
+; - Number
+; - Symbol
+; - (make-add BSL-var-expr BSL-var-expr)
+; - (make-mul BSL-var-expr BSL-var-expr)
 
+;; ex 352
+; BSL-var-expr Symbol Number -> BSL-var-expr
+; interpretation: consumes a BSL-var-exp, symbol and number
+; produces a BSL-var-exp with the symbol replaced by the number
+
+(check-expect (subst (make-add 'x 3) 'x 10) (make-add 10 3))
+(check-expect (subst (make-mul 1/2 (make-mul 'x 3)) 'x 10) (make-mul 1/2 (make-mul 10 3)))
+(check-expect (subst 'x 'x 10) 10)
+
+(define (subst bslvarexp sym num)
+  (cond
+    [(number? bslvarexp) bslvarexp]
+    [(and (symbol? bslvarexp) (equal? sym bslvarexp)) num]
+    [(symbol? bslvarexp) bslvarexp]
+    [(add? bslvarexp) (make-add (subst (add-left bslvarexp) sym num)
+                                (subst (add-right bslvarexp) sym num))]
+    [(mul? bslvarexp) (make-mul (subst (mul-left bslvarexp) sym num)
+                                (subst (mul-right bslvarexp) sym num))]))
+
+(define (BSL-exp? exp)
+  (cond
+    [(number? exp) #t]
+    [(add? exp) #t]
+    [(mul? exp) #t]
+    [else #f]))
+
+;; ex 353
+; BSL-var-exp -> Boolean
+; interpretaton: this fn checks whther a BSL-var-exp
+; is also a BSL-exp
+
+(check-expect (numeric? 5) #t)
+(check-expect (numeric? (make-add 5 10)) #t)
+(check-expect (numeric? 'x) #f)
+(check-expect (numeric? (make-add 5 (make-mul 10 20))) #t)
+
+(define (numeric? bslvarexp)
+  (BSL-exp? bslvarexp))
+  
+;; ex 354
+; BSL-var-exp -> Number or Error
+; interpretation: this fn evaluates the BSL-var-exp
+; if it is a BSL-expr
+; else produces an Error
+
+(check-expect (eval-variable 5) 5)
+(check-expect (eval-variable (make-add 5 10)) 15)
+(check-error (eval-variable 'x) "error")
+(check-expect (eval-variable (make-add 5 (make-mul 10 20))) 205)
+
+(define (eval-variable bslvarexp)
+  (cond
+    [(numeric? bslvarexp) (eval-expression bslvarexp)]
+    [else (error "error")]))
+
+; An AL (short for association list) is [List-of Association]
+; An Association is a list of two items:
+; (cons Symbol (cons Number '()))
+
+; ex of AL
+; (list (list 'x 5) (list 'y 10) (list 'z 15))
+
+; BSL-var-exp AL -> Number
+; interpretation: fn takes a bslvarexp and evaluates it
+; using the appropriate substition as indicated by
+; the association list
+
+(check-expect (eval-variable* (make-add 'x 3) (list (list 'x 10))) 13)
+(check-expect (eval-variable* (make-mul 1/2 (make-mul 'x 3)) (list (list 'x 10))) 15)
+(check-expect (eval-variable* 'x (list (list 'x 10))) 10)
+(check-expect (eval-variable* (make-add (make-mul 'x 'x) (make-mul 'y 'y))
+                              (list
+                               (list 'x 2)
+                               (list 'y 5))) 29)
+
+(define (eval-variable* bslvarexp al)
+  (eval-variable (sub* bslvarexp al)))
+
+(define (sub* bslvarexp al)
+  (cond
+    [(empty? al) bslvarexp]
+    [else (sub* (subst bslvarexp (first (first al)) (second (first al))) (rest al))]))
+
+;; ex 355
+; BSL-var-expr AL -> Number
+
+(check-expect (eval-var-lookup (make-add 'x 3) (list (list 'x 10))) 13)
+(check-expect (eval-var-lookup (make-mul 1/2 (make-mul 'x 3)) (list (list 'x 10))) 15)
+(check-expect (eval-var-lookup 'x (list (list 'x 10))) 10)
+(check-expect (eval-var-lookup (make-add (make-mul 'x 'x) (make-mul 'y 'y))
+                              (list
+                               (list 'x 2)
+                               (list 'y 5))) 29)
+
+(define (eval-var-lookup bslvarexp al)
+  (cond
+    [(number? bslvarexp) bslvarexp]
+    [(symbol? bslvarexp) (second (assq bslvarexp al))]
+    [(add? bslvarexp) (+ (eval-var-lookup (add-left bslvarexp) al) (eval-var-lookup (add-right bslvarexp) al))]
+    [(mul? bslvarexp) (* (eval-var-lookup (mul-left bslvarexp) al) (eval-var-lookup (mul-right bslvarexp) al))]
+    [else (error "error")]))
