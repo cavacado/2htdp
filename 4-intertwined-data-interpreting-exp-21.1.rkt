@@ -261,3 +261,49 @@
     [(add? bslvarexp) (+ (eval-var-lookup (add-left bslvarexp) al) (eval-var-lookup (add-right bslvarexp) al))]
     [(mul? bslvarexp) (* (eval-var-lookup (mul-left bslvarexp) al) (eval-var-lookup (mul-right bslvarexp) al))]
     [else (error "error")]))
+
+
+;; ex 356
+
+; A BSL-var-expr is one of :
+; - Number
+; - Symbol
+; - (make-add BSL-var-expr BSL-var-expr)
+; - (make-mul BSL-var-expr BSL-var-expr)
+
+; A BSL-fun-expr is one of:
+; - (cons Name (cons BSL-var-expr))
+; - (cons BSL-var-expr (cons BSL-fun-expr))
+
+; (k (+ 1 1)) -> (list 'k (make-add 1 1))
+; (* 5 (k (+ 1 1))) -> (make-mul 5 (list 'k (make-add 1 1)))
+; (* (i 5) (k (+ 1 1))) -> (make-mul (list 'i 5) (list 'k (make-add 1 1))))
+
+;; ex 357
+; BSL-fun-expr Symbol Symbol BSL-fun-expr -> Value
+(define fn (list 'k (make-add 1 1)))
+
+(check-expect (eval-definition1 fn 'f (first fn) (second fn) 10)
+              2)
+
+(define (eval-definition1 ex f x b arg)
+  (eval-expression (subst b x arg)))
+
+;; ex 358
+(define-struct fn-def [name param body])
+(define-struct fn-def* [name param body])
+
+; a BSL-fun-def is one of:
+; (make-fn-def Symbol Symbol BSL-var-exp)
+; (make-fun-def Symbol Symbol BSL-fun-def)
+
+; (define (f x) (+ 3 x)) -> (make-fn-def 'f 'x (make-add 3 'x))
+; (define (g y) (f (* 2 y))) -> (make-fn-def 'g 'y (make-fn-def 'f 'y (make-mul 2 'y)))
+; (define (h v) (+ (f v) (g v))) -> (make-fn-def 'h 'v (make-add (make-fn-def 'f 'v 'v) (make-fn-def 'g 'v 'v))))
+
+; a BSL-fun-def* is:
+; (make-fn-def* Symbol Symbol BSL-var-exp)
+
+;; ex 359
+
+  
