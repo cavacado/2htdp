@@ -272,8 +272,11 @@
 ; - (make-mul BSL-var-expr BSL-var-expr)
 
 ; A BSL-fun-expr is one of:
-; - (cons Name (cons BSL-var-expr))
-; - (cons BSL-var-expr (cons BSL-fun-expr))
+; - Number
+; - Symbol
+; - (make-add BSL-var-expr BSL-var-expr)
+; - (make-mul BSL-var-expr BSL-var-expr)
+; - (list Symbol BSL-var-expr)
 
 ; (k (+ 1 1)) -> (list 'k (make-add 1 1))
 ; (* 5 (k (+ 1 1))) -> (make-mul 5 (list 'k (make-add 1 1)))
@@ -302,8 +305,15 @@
 ; (define (h v) (+ (f v) (g v))) -> (make-fn-def 'h 'v (make-add (make-fn-def 'f 'v 'v) (make-fn-def 'g 'v 'v))))
 
 ; a BSL-fun-def* is:
-; (make-fn-def* Symbol Symbol BSL-var-exp)
+; '()
+; (cons BSL-fun-def '())
+
+(define da-fgh
+  (list (make-fn-def 'f 'x (make-add 3 'x))
+        (make-fn-def 'g 'y (make-fn-def 'f 'y (make-mul 2 'y)))
+        (make-fn-def 'h 'v (make-add (make-fn-def 'f 'v 'v) (make-fn-def 'g 'v 'v)))))
 
 ;; ex 359
 
+  
   
