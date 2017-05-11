@@ -313,7 +313,5 @@
         (make-fn-def 'g 'y (make-fn-def 'f 'y (make-mul 2 'y)))
         (make-fn-def 'h 'v (make-add (make-fn-def 'f 'v 'v) (make-fn-def 'g 'v 'v)))))
 
-;; ex 359
-
   
   
