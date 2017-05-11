@@ -130,3 +130,94 @@
   (cond
     [(and (list? (assq sym loa)) (string? (second (assq sym loa)))) (second (assq sym loa))]
     [else #f]))
+
+; An XWord is '(word ((text String)))
+
+;; ex 370
+(define xword1 '(word ((text "str1"))))
+(define xword2 '(word ((text "str2"))))
+(define xword3 '(word ((text "str3"))))
+
+; expression -> Boolean
+; interpretation: takes a ISL+ value and
+; checks whether it is in XWord
+
+(check-expect (word? xword1) #t)
+(check-expect (word? 3) #f)
+(check-expect (word? xword2) #t)
+
+(define (word? w)
+  (cond
+    [(number? w) #f]
+    [(list? w) #t]
+    [(symbol? (first w)) #t]
+    [(symbol? (first (second w))) #t]
+    [else #f]))
+
+; XWord -> String
+; interpretation: extracts the text string from the xword
+
+(check-expect (word-text xword1) "str1")
+(check-expect (word-text 3) #f)
+(check-expect (word-text xword2) "str2")
+
+(define (word-text w)
+  (cond
+    [(word? w) (second (assq 'text (second w)))]
+    [else #f]))
+
+; An Xexpr is one of:
+; - String
+; - (cons Symbol XL)
+; An XL is one of:
+; - (cons (cons Symbol XL) '())
+; - (cons [List-of Attribute] (cons (cons Symbol XL) '()))
+
+; An XEnum.v1 is one of: 
+; – (cons 'ul [List-of XItem.v1])
+; – (cons 'ul (cons Attributes [List-of XItem.v1]))
+; An XItem.v1 is one of:
+; – (cons 'li (cons XWord '()))
+; – (cons 'li (cons Attributes (cons XWord '())))
+
+(define enum0
+  '(ul
+    (li (word ((text "one"))))
+    (li (word ((text "two"))))))
+
+(define BULLET (circle 1 "solid" "black"))
+
+(define e0-rendered
+  (above/align 'left
+               (beside/align 'center BULLET
+                             (text "one" 12 'black))
+               (beside/align 'center BULLET
+                             (text "two" 12 'black))))
+
+; XItem.v1 -> Image
+; renders an item as a "word" prefixed by a bullet
+(define (render-item1 i)
+  (local ((define content (xexpr-content i))
+          (define element (first content))
+          (define a-word (word-text element))
+          (define item (text a-word 12 'black)))
+    (beside/align 'center BULLET item)))
+
+; XEnum.v1 -> Image
+; renders a simple enumeration as an image
+
+;; ex 372
+(check-expect (render-enum1 enum0) e0-rendered)
+
+(define (render-enum1 xe)
+  (local ((define content (xexpr-content xe))
+          ; XItem.v1 Image -> Image
+          (define (deal-with-one item so-far)
+            (above/align 'left
+                         (render-item1 item)
+                         so-far)))
+    (foldr deal-with-one empty-image content)))
+
+
+
+
