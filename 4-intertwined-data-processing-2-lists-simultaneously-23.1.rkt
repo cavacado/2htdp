@@ -171,7 +171,22 @@
        [(equal? 'right (first lod)) (tree-pick (branch-right tree) (rest lod))])]))
 
 
+; A Son.L is one of: 
+; – empty 
+; – (cons Number Son.L)
+; 
+; Son is used when it 
+; applies to Son.L and Son.R
+  
+; A Son.R is one of: 
+; – empty 
+; – (cons Number Son.R)
+; 
+; Constraint If s is a Son.R, 
+; no number occurs twice in s.
 
+
+  
 
 
 
