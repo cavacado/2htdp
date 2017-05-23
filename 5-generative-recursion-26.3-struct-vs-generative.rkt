@@ -118,3 +118,10 @@
 
 ;; ex 443
 ; hard to terminate??
+
+;; ex 444
+; divisors consume 2 numbers because there is a cap to greatest common
+; divisor; extra computation is not needed
+; consumes the smaller of the divisors since greater divisor cannot be found
+; between S and L
+
