@@ -26,3 +26,29 @@
   (* (- x 2) (- x 4)))
 
 (check-expect (find-root poly 3 6) 3.75)
+
+;; ex 449
+(define (find-root-reduce f left right)
+  (cond
+    [(<= (- right left) epsilon) left]
+    [else
+     (local ((define mid (/ (+ left right) 2))
+             (define f@mid (f mid))
+             (define f@left (f left))
+             (define f@right (f right)))
+       (cond
+         [(or (<= f@left 0 f@mid) (<= f@mid 0 f@left))
+          (find-root-reduce f left mid)]
+         [(or (<= f@mid 0 f@right) (<= f@right 0 f@mid))
+          (find-root-reduce f mid right)]))]))
+
+;; ex 450
+(define (find-root-simple f left right)
+  (cond
+    [(<= (- right left) epsilon) left]
+    [else
+     (local ((define mid (/ (+ left right) 2))
+             (define f@mid (f mid)))
+       (cond
+         [(or (<= (f left) 0 f@mid) (<= f@mid 0 (f left)))
+          (find-root-simple f left mid)]))]))
