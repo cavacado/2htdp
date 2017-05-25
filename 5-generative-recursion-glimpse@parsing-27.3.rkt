@@ -67,7 +67,11 @@
   (cond
     [(empty? lx) '()]
     [else
-     (cons (chunk lx) (tokenize (remove-chunk lx)))]))
+     (cond
+       [(equal? (chunk lx) "")
+        (cons (first lx) (tokenize (remove-chunk lx)))]
+       [else
+        (cons (chunk lx) (tokenize (remove-chunk lx)))])]))
 
 (define (chunk lx)
   (cond
