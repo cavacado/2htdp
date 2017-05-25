@@ -86,4 +86,53 @@
     [(not (member? (first lx) LETTERS)) (rest lx)]
     [else
      (remove-chunk (rest lx))]))
+
+;; ex 454
+; N [List-of N^2] -> [List-of [List-of N]]
+; interpretation: fn consumes a number
+; produces a matrix of numbers
+
+(check-expect
+  (create-matrix 2 (list 1 2 3 4))
+  (list (list 1 2)
+        (list 3 4)))
+
+(check-expect
+  (create-matrix 3 (list 1 2 3 4 5 6 7 8 9))
+  (list (list 1 2 3)
+        (list 4 5 6)
+        (list 7 8 9)))
+
+(check-expect
+ (create-matrix 4 (list 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
+ (list (list 0 0 0 0)
+       (list 0 0 0 0)
+       (list 0 0 0 0)
+       (list 0 0 0 0)))
+       
+
+(define (create-matrix n lonsq)
+  (cond
+    [(empty? lonsq) '()]
+    [else
+     (cons (divide n lonsq) (create-matrix n (remove-first-row n lonsq)))]))
+
+(define (divide n lonsq)
+  (cond
+    [(zero? n) '()]
+    [else
+     (cons (first lonsq) (divide (sub1 n) (rest lonsq)))]))
+
+(define (remove-first-row n lonsq)
+  (cond
+    [(zero? n) lonsq]
+    [else
+     (remove-first-row (sub1 n) (rest lonsq))]))
+
+
     
+    
+  
+
+
+     
