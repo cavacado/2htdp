@@ -20,8 +20,8 @@
 ; computes the area under the graph of f between a and b
 ; assume (< a b) holds
 
-(check-within (integrate-kepler (lambda (x) 20) 12 22) 200 epsilon)
-(check-within (integrate-kepler (lambda (x) (* 2 x)) 0 10) 100 epsilon)
+;(check-within (integrate-kepler (lambda (x) 20) 12 22) 200 epsilon)
+;(check-within (integrate-kepler (lambda (x) (* 2 x)) 0 10) 100 epsilon)
 ;(check-within (integrate-kepler (lambda (x) (* 3 (sqr x))) 0 10)
 ;              1000
 ;              epsilon)
@@ -52,15 +52,15 @@
 ;; ex 460
 
 (check-within (integrate-kepler3 (lambda (x) 20) 12 22) 200 epsilon)
-;(check-within (integrate-kepler3 (lambda (x) (* 2 x)) 0 10) 100 epsilon)
+(check-within (integrate-kepler3 (lambda (x) (* 2 x)) 0 10) 100 epsilon)
 ;(check-within (integrate-kepler3 (lambda (x) (* 3 (sqr x))) 0 10)
 ;              1000
 ;              epsilon)
 
 (define (integrate-kepler3 f a b)
   (cond
-    [(< (- b a) 1)
+    [(<= (abs (- b a)) 1)
      (+ (* 0.5 (- b a) (+ (f a) (f b))))]
     [else
-     (+ (integrate-kepler3 f a (/ (- b a) 2)) (integrate-kepler3 f (/ (- b a)  2) b))]))
+     (+ (integrate-kepler3 f a (+ a (/ (- b a) 2))) (integrate-kepler3 f (+ a (/ (- b a)  2)) b))]))
   
