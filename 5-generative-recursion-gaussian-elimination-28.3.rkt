@@ -65,4 +65,23 @@
      (and (equal? (rhs (first soe)) (plug-in (first soe) sol))
           (check-solution (rest soe) sol))]))
 
+;; ex 465
+; Equation Equation -> Equation
+; interpretation: takes 2 eqns of equal length,
+; 'subtracts' them such that the first coefficient is 0
+; thus returning the rest of the 'subtracted' eqn
+
+(check-expect (subtract-soe '(2 2 3 10) '(2 5 12 31)) '(-3 -9 -21))
+
+(define (subtract-soe eqn1 eqn2)
+  (local ((define (aux-subtract-soe eq1 eq2)
+            (cond
+              [(not (equal? (length eq1) (length eq2))) (error "eqns are of different lengths")]
+              [else
+               (cond
+                 [(empty? eq1) '()]
+                 [else
+                  (cons (- (first eq1) (first eq2))
+                        (aux-subtract-soe (rest eq1) (rest eq2)))])])))
+    (rest (aux-subtract-soe eqn1 eqn2))))
     
