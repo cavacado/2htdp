@@ -22,14 +22,14 @@
 
 ; Equation -> [List-of Number]
 ; extracts the left hand side from a row in a matrix
-(check-expect (lhs (first M)) '(2 2 3))
+;(check-expect (lhs (first M)) '(2 2 3))
 
 (define (lhs e)
   (reverse (rest (reverse e))))
 
 ; Equation -> Number
 ; extracts the right hand side from a row in a matrix
-(check-expect (rhs (first M)) 10)
+;(check-expect (rhs (first M)) 10)
 (define (rhs e)
   (first (reverse e)))
 
@@ -40,9 +40,9 @@
 ; calculates the value of the lhs when numbers from solution are
 ; plugged in
 
-(check-expect (plug-in '(2 2 3 10) '(1 1 2)) 10)
-(check-expect (plug-in '(2 5 12 31) '(1 1 2)) 31)
-(check-expect (plug-in '(4 1 -2 1) '(1 1 2)) 1)
+;(check-expect (plug-in '(2 2 3 10) '(1 1 2)) 10)
+;(check-expect (plug-in '(2 5 12 31) '(1 1 2)) 31)
+;(check-expect (plug-in '(4 1 -2 1) '(1 1 2)) 1)
 
 (define (plug-in eqn sol)
   (local ((define LHS (lhs eqn)))
@@ -71,8 +71,9 @@
 ; 'subtracts' them such that the first coefficient is 0
 ; thus returning the rest of the 'subtracted' eqn
 
-(check-expect (subtract-soe '(2 2 3 10) '(2 5 12 31) 0) '(-3 -9 -21))
-(check-expect (subtract-soe '(3 9 21) '(-3 -8 -19) 0) '(1 2))
+;(check-expect (subtract-soe '(2 2 3 10) '(2 5 12 31) 0) '(-3 -9 -21))
+;(check-expect (subtract-soe '(-3 -9 -21) '(-3 -8 -19) 0) '(-1 -2))
+;(check-expect (subtract-soe '(3 9 21) '(-3 -8 -19) 0) '(1 2))
 
 (define (subtract-soe eqn1 eqn2 count)
   (local (
@@ -93,6 +94,45 @@
                                                     (* x multiple-temp)) eq2)))
                     (aux-subtract-soe eq1 new-aux-eq count))])])))
     (rest (aux-subtract-soe eqn1 eqn2 count))))
+
+;; ex 466
+; A TM is a [NEList-of Equation]
+; such that the Equantions are of decreasing length:
+; n + 1, n, n - 1, ..., 2.
+; interpretation represents a triangular matrix
+
+; SOE -> TM
+; triangulates the given system of equations.
+
+;(check-expect (aux-triangulate M) (list '(2 2 3 10) '(-3 -9 -21) '(-1 -2)))
+
+
+(define (triangulate soe)
+  (local ((define (aux2-triangulate soe)
+           (local ((define (aux-triangulate soe)
+                     (local ((define (remv-2nd soe)
+                               (cond
+                                 [(>= (length soe) 2) (cons (first soe) (rest (rest soe)))]
+                                 [else soe])))
+                       (cond
+                         [(empty? (rest soe)) '()]
+                         [else
+                          (cons (subtract-soe (first soe) (second soe) 0) (aux-triangulate (remv-2nd soe)))])))
+                   (define temp-res (aux-triangulate soe)))
+             (cond
+               [(empty? temp-res) temp-res]
+               [else
+                (cons (first temp-res) (aux2-triangulate temp-res))]))))
+    (cons (first soe) (aux2-triangulate soe))))
+      
+    
+
+
+ 
+
+
+  
+    
 
 
 
