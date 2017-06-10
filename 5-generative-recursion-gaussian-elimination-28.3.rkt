@@ -56,7 +56,7 @@
 ; interpretation: consumes SOE and Solution and produces
 ; a Boolean if plugging in Solution
 ; produces equal lhs and rhs values
-(check-expect (check-solution M S) #true) 
+;(check-expect (check-solution M S) #true) 
 
 (define (check-solution soe sol)
   (cond
@@ -71,17 +71,29 @@
 ; 'subtracts' them such that the first coefficient is 0
 ; thus returning the rest of the 'subtracted' eqn
 
-(check-expect (subtract-soe '(2 2 3 10) '(2 5 12 31)) '(-3 -9 -21))
+(check-expect (subtract-soe '(2 2 3 10) '(2 5 12 31) 0) '(-3 -9 -21))
+(check-expect (subtract-soe '(3 9 21) '(-3 -8 -19) 0) '(1 2))
 
-(define (subtract-soe eqn1 eqn2)
-  (local ((define (aux-subtract-soe eq1 eq2)
+(define (subtract-soe eqn1 eqn2 count)
+  (local (
+          (define (aux-subtract-soe eq1 eq2 count)
             (cond
               [(not (equal? (length eq1) (length eq2))) (error "eqns are of different lengths")]
               [else
                (cond
                  [(empty? eq1) '()]
-                 [else
+                 [(or (zero? (- (first eq1) (first eq2))) (not (equal? 0 count)))
                   (cons (- (first eq1) (first eq2))
-                        (aux-subtract-soe (rest eq1) (rest eq2)))])])))
-    (rest (aux-subtract-soe eqn1 eqn2))))
+                        (aux-subtract-soe (rest eq1) (rest eq2) (add1 count)))]
+                 [else
+                  (local ((define (find-multiple x y)
+                            (/ x y))
+                          (define multiple-temp (find-multiple (first eq1) (first eq2)))
+                          (define new-aux-eq (map (lambda (x)
+                                                    (* x multiple-temp)) eq2)))
+                    (aux-subtract-soe eq1 new-aux-eq count))])])))
+    (rest (aux-subtract-soe eqn1 eqn2 count))))
+
+
+
     
